@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for pet in items.all %}
+<div class="row pt-3">
+    <div class="col-8" onclick="window.location='{% url 'detail' pet.id %}';" style="cursor: pointer">
+      <h2>{{ pet.name }}</h2>
+      <h4>{{ pet.breed }}</h4>
+      </div>
+      <div class="col-4">
+        <a href="javascript:{document.getElementById('remove{{pet.id}}').submit()}"><button class="btn btn-primary btn-xs "><h1>Remove -</h1></button></a>
+        </div>
+  </div>
+  <form id="remove{{pet.id}}" method="POST" action="{% url 'remove' pet.id %}">
+    {% csrf_token %}
+    <input type="hidden"/>
+    </form>
+{% endfor %}
+{% endblock %}

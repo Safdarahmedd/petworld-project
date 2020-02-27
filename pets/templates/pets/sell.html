@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if error %}
+
+{{error}}
+<br/>
+<br/>
+
+{% endif %}
+
+<h1>Sell</h1>
+<form method="POST" action="{% url 'sell' %}" enctype="multipart/form-data">
+{% csrf_token %}
+Name:
+<br/>
+<input type="text" name="name"/>*
+<br/>
+Breed:
+<br/>
+<input type="text" name="breed"/>*
+<br/>
+Vaccinated:
+<br/>
+<input type="radio" id="y" name="vacc" value="y" checked>
+<label for="y">Yes</label><br>
+<input type="radio" id="n" name="vacc" value="n">
+<label for="n">No</label>*<br>
+<script type="text/javascript">
+  window.x=1;
+  </script>
+{% for i in range %}
+Image:
+<br/>
+<input type="file" name="image{{i}}"/>
+<script type="text/javascript">
+  if(window.x == 1)
+document.write('*');
+window.x=5;
+</script>
+<br/>
+{% endfor %}
+<br/>
+<input type="submit" class="btn btn-primary" value="Sell" />
+  </form>
+
+{% endblock %}
