@@ -7,7 +7,6 @@
 
 {% for pic in pics %}
   <div class="mySlides">
-    <div class="numbertext">i / f</div>
     <img src="{{pic.url}}" style="width:100%">
   </div>
 {% endfor %}
@@ -116,4 +115,8 @@ function showSlides(n) {
 </script>
 
 <h3>{{pet.name}}</h3>
+<h4>{{pet.breed}}</h4>
+{% if pet.vaccinated == 'y' %}
+<i>VACCINATED</i>
+{% endif %}
 {% endblock %}

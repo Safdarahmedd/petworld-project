@@ -1,26 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for pett in pets.all %}
-<div class="row pt-3" onfocus="func(pett)">
-    <div class="col-8" onclick="window.location='{% url 'detail' pett.id %}';" style="cursor: pointer">
-      <h2>{{ pett.name }}</h2>
-      <h4>{{ pett.breed }}</h4>
+{% for pet,cart in pets %}
+<div class="row pt-3">
+    <div class="col-8" onclick="window.location='{% url 'detail' pet.id %}';" style="cursor: pointer">
+      <h2>{{ pet.name }}</h2>
+      <h4>{{ pet.breed }}</h4>
       </div>
       <div class="col-4">
-        <a id="link{{pett.id}}" href= "javascript:{document.getElementById('add{{pett.id}}').submit()}"><button id="button{{pett.id}}" class='btn btn-primary btn-xs'><h1>Add to cart +</h1></button></a>
+        {% if cart == 'n' %}
+        <a href= "javascript:{document.getElementById('add{{pet.id}}').submit()}"><button class='btn btn-primary btn-xs'><h1>Add to cart +</h1></button></a>
+        {% else %}
+        <button class='btn btn-primary btn-xs'><h1>Added ✔︎</h1></button>
+        {% endif %}
         </div>
   </div>
-  <form id="add{{pett.id}}" method="POST" action="{% url 'add_to_cart' pett.id %}">
+  <form id="add{{pet.id}}" method="POST" action="{% url 'add_to_cart' pet.id %}">
     {% csrf_token %}
     <input type="hidden"/>
     </form>
 {% endfor %}
-<script type="text/javascript">
-function func(pett){
-  if(cart.objects.filter(pet=pett).count()>0) {
-    document.getElementById('button{{pett.id}}').innerHTML = "Added ✔︎";
-    document.getElementById('link{{pett.id}}').href = "";}
-                  }
-</script>
 {% endblock %}

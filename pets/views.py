@@ -5,11 +5,17 @@ from accounts.models import Cart
 
 def home(request):
     pets = Pet.objects
-    if request.user :
-        cart = Cart.objects.get(buyer=request.user)
+    if request.user.is_authenticated :
+        list = Pet.objects.filter(cart__pk=request.user)
     else:
-        cart=NULL
-    return render(request,'pets/home.html',{'pets':pets,'cart':cart})
+        list=[]
+    obj={}
+    for i in pets.all() :
+        if i in list :
+            obj[i]='y'
+        else:
+            obj[i]='n'
+    return render(request,'pets/home.html',{'pets':obj.items()})
 
 def detail(request, pet_id):
     pet = get_object_or_404(Pet, pk=pet_id)
@@ -61,7 +67,15 @@ def add_to_cart(request, pet_id):
         pet = get_object_or_404(Pet, pk=pet_id)
         cart = get_object_or_404(Cart, pk=request.user)
         cart.pet.add(pet)
-    return render(request, 'pets/home.html')
+    pets = Pet.objects
+    list = Pet.objects.filter(cart__pk=request.user)
+    obj={}
+    for i in pets.all() :
+        if i in list :
+            obj[i]='y'
+        else:
+            obj[i]='n'
+    return render(request, 'pets/home.html',{'pets':obj.items()})
 
 @login_required(login_url="/accounts/login")
 def remove_from_cart(request, pet_id):
